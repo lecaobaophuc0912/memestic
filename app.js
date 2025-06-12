@@ -86,7 +86,8 @@ app.post('/send-now-photo', async (req, res) => {
     }
 });
 
-cron.schedule('0 9 * * *', async () => {
+const cronSchedule = process.env.CRON_SCHEDULE || '0 9,13,18,21 * * *';
+cron.schedule(cronSchedule, async () => {
     try {
         const meme = await pickNewMeme();
         console.log('[schedule] Sending meme to Telegram (download first):', meme.url);
