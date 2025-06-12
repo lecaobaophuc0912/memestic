@@ -72,3 +72,44 @@ curl -X POST http://localhost:4000/send-now-preview -H "Content-Type: applicatio
 ## License
 
 MIT
+
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" \
+ -p 1433:1433 --name sqlserver \
+ -d mcr.microsoft.com/mssql/server:2022-latest
+
+## Docker build & run (production)
+
+1. **Tạo file cấu hình môi trường:**
+
+   - Copy file `env.template` thành `env.prod` và chỉnh sửa giá trị cho phù hợp.
+   - Ví dụ:
+     ```sh
+     cp env.template env.prod
+     # Sau đó chỉnh sửa file env.prod nếu cần
+     ```
+
+2. **Build Docker image:**
+
+   ```sh
+   docker build -t reddit-memestic .
+   ```
+
+3. **Chạy container với file env.prod:**
+
+   ```sh
+   docker run --env-file env.prod -p 4000:4000 reddit-memestic
+   ```
+
+   - Tham số `--env-file env.prod` giúp nạp biến môi trường từ file cấu hình.
+   - `-p 4000:4000` để map port 4000 từ container ra ngoài.
+
+4. **(Tùy chọn) Xem log container:**
+
+   ```sh
+   docker logs -f <container_id>
+   ```
+
+5. **(Tùy chọn) Dừng container:**
+   ```sh
+   docker stop <container_id>
+   ```
