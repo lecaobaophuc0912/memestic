@@ -1,0 +1,13 @@
+{
+    "watch": [
+        "app.js",
+        "routes/",
+        "sendTelegram.js",
+        "memeScheduler.js"
+    ],
+    "ext": "js,json",
+    "ignore": [
+        "sent_memes.json",
+        "node_modules/"
+    ]
+}
