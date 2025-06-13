@@ -92,7 +92,7 @@ cron.schedule(cronSchedule, async () => {
     try {
         const meme = await pickNewMeme();
         console.log('[schedule] Sending meme to Telegram (download first):', meme.url);
-        await sendTelegramPhotoFromUrl(meme.url, meme.caption);
+        await sendTelegramMessageWithPhoto(meme.url, meme.caption || 'No, this is not your first day.');
         console.log('[schedule] Sent meme to Telegram successfully');
     } catch (err) {
         console.error('Meme schedule error:', err);
