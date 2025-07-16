@@ -88,9 +88,37 @@ app.post("/send-now-photo", async (req, res) => {
   }
 });
 
-app.post("/test", async (req, res) => {
+app.post("/daily-report", async (req, res) => {
   try {
     const content = await getQuoteDailyResponse();
+    await sendTelegramMessage(content);
+    res.status(200).json({
+      success: true,
+      message: content,
+    });
+  } catch (err) {
+    console.error("Meme schedule error:", err);
+    res.status(500).json({ success: false, message: "Error" });
+  }
+});
+
+app.post("/remind-lunch", async (req, res) => {
+  try {
+    const store = [
+      "Cơm chiên & Mỳ trộn MunPi",
+      "Cơm tấm Long Xuyên",
+      "Cơm Bình Dân - Dạ Nam",
+      "Cơm tấm Ngô Quyền",
+      "Nhà Xưa",
+      "Cơm Minh nhà làm",
+      "Cơm gà xối mỡ Đông Phát",
+      "Cơm tấm Trúc Thủy",
+      "Cơm trưa cô 8 - Đào Cam Mộc",
+    ];
+    const randomStore = store[Math.floor(Math.random() * store.length)];
+    const content = await chatWithGPT(
+      `Hãy cho tôi một tin nhắn ngắn gọn giống như một cô gái đôi mươi nhắc nhở các anh đồng nghiệp để đặt cơm trưa của quán ${randomStore} - chỉ trả lời bằng tiếng Việt`
+    );
     await sendTelegramMessage(content);
     res.status(200).json({
       success: true,
@@ -125,6 +153,40 @@ cron.schedule(
   async () => {
     try {
       const content = await getQuoteDailyResponse();
+      await sendTelegramMessage(content);
+      res.status(200).json({
+        success: true,
+        message: content,
+      });
+    } catch (err) {
+      console.error("Meme schedule error:", err);
+      res.status(500).json({ success: false, message: "Error" });
+    }
+  },
+  {
+    timezone: "Asia/Ho_Chi_Minh",
+  }
+);
+
+cron.schedule(
+  "15 11 * * *", // 11h15
+  async () => {
+    try {
+      const store = [
+        "Cơm chiên & Mỳ trộn MunPi",
+        "Cơm tấm Long Xuyên",
+        "Cơm Bình Dân - Dạ Nam",
+        "Cơm tấm Ngô Quyền",
+        "Nhà Xưa",
+        "Cơm Minh nhà làm",
+        "Cơm gà xối mỡ Đông Phát",
+        "Cơm tấm Trúc Thủy",
+        "Cơm trưa cô 8 - Đào Cam Mộc",
+      ];
+      const randomStore = store[Math.floor(Math.random() * store.length)];
+      const content = await chatWithGPT(
+        `Hãy cho tôi một tin nhắn ngắn gọn giống như một cô gái đôi mươi nhắc nhở các anh đồng nghiệp để đặt cơm trưa của quán ${randomStore} - chỉ trả lời bằng tiếng Việt`
+      );
       await sendTelegramMessage(content);
       res.status(200).json({
         success: true,
