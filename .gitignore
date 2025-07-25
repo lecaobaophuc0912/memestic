@@ -33,3 +33,4 @@ temp_telegram_photo*
 sent_memes.json 
 
 env.prod
+.env.prod
