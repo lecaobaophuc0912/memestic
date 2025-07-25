@@ -4,7 +4,8 @@ services:
     build: .
     container_name: reddit-memestic
     env_file:
-      - .env
+      - .env.prod
     ports:
       - "4000:4000"
     restart: unless-stopped 
+    

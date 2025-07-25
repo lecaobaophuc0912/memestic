@@ -88,28 +88,27 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=YourStrong!Passw0rd" \
      # Sau đó chỉnh sửa file env.prod nếu cần
      ```
 
-2. **Build Docker image:**
+2. **Build & Run với Docker Compose:**
 
    ```sh
-   docker build -t reddit-memestic .
+   docker-compose up -d
    ```
 
-3. **Chạy container với file env.prod:**
+   - Đảm bảo file `env.prod` nằm cùng thư mục với `docker-compose.yml`.
+   - Nếu lần đầu chạy hoặc có thay đổi code, có thể thêm `--build`:
+     ```sh
+     docker-compose up --build -d
+     ```
+   - Port 4000 sẽ được map ra ngoài, biến môi trường sẽ tự động nạp từ file `env.prod`.
+   - Container sẽ tự động restart nếu Docker daemon khởi động lại (theo cấu hình `restart: unless-stopped`).
+
+3. **(Tùy chọn) Xem log container:**
 
    ```sh
-   docker run --env-file env.prod -p 4000:4000 reddit-memestic
+   docker-compose logs -f
    ```
 
-   - Tham số `--env-file env.prod` giúp nạp biến môi trường từ file cấu hình.
-   - `-p 4000:4000` để map port 4000 từ container ra ngoài.
-
-4. **(Tùy chọn) Xem log container:**
-
+4. **(Tùy chọn) Dừng container:**
    ```sh
-   docker logs -f <container_id>
-   ```
-
-5. **(Tùy chọn) Dừng container:**
-   ```sh
-   docker stop <container_id>
+   docker-compose down
    ```

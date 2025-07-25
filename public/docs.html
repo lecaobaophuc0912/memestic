@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Memestic Bot API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 32px;
+        }
+
+        h1 {
+            color: #2d3a4a;
+        }
+
+        h2 {
+            color: #3b4c5a;
+            margin-top: 2em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        code {
+            color: #c7254e;
+            background: #f9f2f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .endpoint {
+            margin-bottom: 2em;
+        }
+
+        .method {
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+
+        .url {
+            font-family: monospace;
+            color: #007bff;
+        }
+
+        .note {
+            color: #888;
+            font-size: 0.95em;
+        }
+
+        ul {
+            margin-top: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Reddit Memestic Bot API Documentation</h1>
+        <p class="note">Tài liệu các endpoint API cho bot Reddit Memestic. Các endpoint đều trả về JSON (trừ trang home
+            và /users).</p>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/send-now</span></h2>
+            <p>Gửi meme mới (ảnh từ Reddit, caption là tiêu đề Reddit) đến Telegram.</p>
+            <b>Request body:</b>
+            <pre>{}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/send-now -H "Content-Type: application/json" -d '{}'</pre>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "type": "photo",
+  "usedImageUrl": "url_ảnh",
+  "caption": "caption"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/send-now-text</span></h2>
+            <p>Gửi text đến Telegram.</p>
+            <b>Request body:</b>
+            <pre>{
+  "text": "Nội dung gửi"
+}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/send-now-text -H "Content-Type: application/json" -d '{"text":"Hello"}'</pre>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "type": "text",
+  "sent": "Nội dung gửi"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/send-now-photo</span></h2>
+            <p>Gửi ảnh đến Telegram (truyền url hoặc lấy meme mới).</p>
+            <b>Request body:</b>
+            <pre>{
+  "photo": "url_ảnh",
+  "caption": "caption tuỳ chọn"
+}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/send-now-photo -H "Content-Type: application/json" -d '{"photo":"https://i.imgur.com/your-image.jpg","caption":"Caption tuỳ chọn"}'</pre>
+            <span class="note">Nếu không truyền <code>photo</code>, server sẽ tự lấy meme mới.</span>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "type": "photo",
+  "usedImageUrl": "url_ảnh",
+  "caption": "caption"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/send-now-preview</span></h2>
+            <p>Gửi meme dạng preview link (Telegram tự hiển thị ảnh).</p>
+            <b>Request body:</b>
+            <pre>{
+  "photo": "url_ảnh",
+  "caption": "caption tuỳ chọn"
+}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/send-now-preview -H "Content-Type: application/json" -d '{"photo":"https://i.imgur.com/your-image.jpg","caption":"Caption tuỳ chọn"}'</pre>
+            <span class="note">Nếu không truyền <code>photo</code>, server sẽ tự lấy meme mới.</span>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "type": "preview",
+  "usedImageUrl": "url_ảnh",
+  "caption": "caption"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/test</span></h2>
+            <p>Gửi một câu quote daily đến Telegram.</p>
+            <b>Request body:</b>
+            <pre>{}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/test -H "Content-Type: application/json" -d '{}'</pre>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "message": "Nội dung quote"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">GET</span> <span class="url">/</span></h2>
+            <p>Trả về trang home (HTML, không phải API JSON).</p>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">GET</span> <span class="url">/users</span></h2>
+            <p>Trả về chuỗi <code>respond with a resource</code> (test route).</p>
+        </div>
+
+        <hr>
+        <p class="note">© Reddit Memestic Bot - API Docs</p>
+    </div>
+</body>
+
+</html>
