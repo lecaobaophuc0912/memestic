@@ -7,11 +7,32 @@ const fetch = require("node-fetch");
  * @param {string} model - Model GPT sử dụng (mặc định: gpt-3.5-turbo)
  * @returns {Promise<string>} - Câu trả lời từ ChatGPT
  */
-async function chatWithGPT(message, model = "openai/gpt-3.5-turbo-16k") {
+async function chatWithGPT(message) {
   try {
     if (!process.env.OPENAI_API_KEY) {
       throw new Error("OPENAI_API_KEY không được tìm thấy trong environment variables");
     }
+    const listModel = [
+      "deepseek/deepseek-chat-v3-0324:free",
+      "deepseek/deepseek-r1-0528:free",
+      "deepseek/deepseek-r1:free",
+      "deepseek/deepseek-chat:free",
+      "tngtech/deepseek-r1t2-chimera:free",
+      "moonshotai/kimi-k2:free",
+      "google/gemini-2.0-flash-exp:free",
+      "qwen/qwq-32b:free",
+      "qwen/qwen3-14b:free",
+      "qwen/qwen3-235b-a22b:free",
+      "qwen/qwen3-32b:free",
+      "google/gemma-3-27b-it:free",
+      "microsoft/mai-ds-r1:free",
+      "qwen/qwen2.5-vl-72b-instruct:free",
+      "mistralai/mistral-small-3.1-24b-instruct:free",
+      "moonshotai/kimi-dev-72b:free",
+      "cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+      "openai/gpt-3.5-turbo-16k",
+    ];
+    const randomModel = listModel[Math.floor(Math.random() * listModel.length)];
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -19,7 +40,7 @@ async function chatWithGPT(message, model = "openai/gpt-3.5-turbo-16k") {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: model,
+        model: randomModel,
         messages: [
           {
             role: "user",
@@ -33,7 +54,7 @@ async function chatWithGPT(message, model = "openai/gpt-3.5-turbo-16k") {
       throw new Error(`API Error: ${response.status} - ${errorData.error?.message || "Unknown error"}`);
     }
     const data = await response.json();
-    return data.choices[0].message.content;
+    return data.choices[0].message.content + `\n\nModel: ${randomModel}`;
   } catch (error) {
     console.error("Lỗi khi chat với ChatGPT:", error.message);
     throw error;
@@ -91,10 +112,10 @@ async function chatWithContext(conversation = [], newMessage, model = "gpt-3.5-t
 
 async function getQuoteDailyResponse() {
   const quote = await chatWithGPT(
-    "Hãy cho tôi một câu quote truyền cảm hứng làm việc đối với một lập trình viên - chỉ trả lời bằng tiếng Việt"
+    "Hãy cho tôi một câu quote ngắn gọn truyền cảm hứng làm việc đối với một lập trình viên - chỉ trả lời bằng tiếng Việt"
   );
   const url = "https://docs.google.com/spreadsheets/d/1zitdZCFNoX_u6xz83guKCmNX6dH8sGXoPOPm7bcSQUE/edit?usp=sharing";
-  return `${quote}\n\nMột câu quote tạo cảm hứng làm việc đúng không nào. Đúng rồi thì mọi người nhớ nhập công việc mình làm vào đây nhé, không đúng thì cũng nhập nhé\n${url}`;
+  return `${quote}\nMột câu quote tạo cảm hứng làm việc đúng không nào. Đúng rồi thì mọi người nhớ nhập công việc mình làm vào đây nhé, không đúng thì cũng nhập nhé\n${url}`;
 }
 
 module.exports = {
