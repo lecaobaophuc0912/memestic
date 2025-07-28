@@ -154,16 +154,30 @@
         </div>
 
         <div class="endpoint">
-            <h2><span class="method">POST</span> <span class="url">/test</span></h2>
+            <h2><span class="method">POST</span> <span class="url">/daily-report</span></h2>
             <p>Gửi một câu quote daily đến Telegram.</p>
             <b>Request body:</b>
             <pre>{}</pre>
             <b>Ví dụ curl:</b>
-            <pre>curl -X POST http://localhost:4000/test -H "Content-Type: application/json" -d '{}'</pre>
+            <pre>curl -X POST http://localhost:4000/daily-report -H "Content-Type: application/json" -d '{}'</pre>
             <b>Response:</b>
             <pre>{
   "success": true,
   "message": "Nội dung quote"
+}</pre>
+        </div>
+
+        <div class="endpoint">
+            <h2><span class="method">POST</span> <span class="url">/remind-lunch</span></h2>
+            <p>Gửi tin nhắn nhắc nhở đặt cơm trưa với quán ngẫu nhiên.</p>
+            <b>Request body:</b>
+            <pre>{}</pre>
+            <b>Ví dụ curl:</b>
+            <pre>curl -X POST http://localhost:4000/remind-lunch -H "Content-Type: application/json" -d '{}'</pre>
+            <b>Response:</b>
+            <pre>{
+  "success": true,
+  "message": "Nội dung tin nhắn nhắc nhở"
 }</pre>
         </div>
 
