@@ -154,13 +154,8 @@ cron.schedule(
     try {
       const content = await getQuoteDailyResponse();
       await sendTelegramMessage(content);
-      res.status(200).json({
-        success: true,
-        message: content,
-      });
     } catch (err) {
       console.error("Meme schedule error:", err);
-      res.status(500).json({ success: false, message: "Error" });
     }
   },
   {

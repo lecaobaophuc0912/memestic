@@ -30,7 +30,7 @@ Thumbs.db
 temp_telegram_photo*
 
 # Data
-sent_memes.json 
+# sent_memes.json 
 
 env.prod
 .env.prod

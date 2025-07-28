@@ -7,7 +7,6 @@ yarn-error.log*
 logs
 *.log
 temp_telegram_photo*
-sent_memes.json
 .git
 .gitignore
 .vscode

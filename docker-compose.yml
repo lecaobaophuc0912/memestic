@@ -7,5 +7,7 @@ services:
       - .env.prod
     ports:
       - "4000:4000"
+    volumes:
+      - ./sent_memes.json:/usr/src/app/sent_memes.json
     restart: unless-stopped 
     

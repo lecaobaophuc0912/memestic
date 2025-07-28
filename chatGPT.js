@@ -111,9 +111,17 @@ async function chatWithContext(conversation = [], newMessage, model = "gpt-3.5-t
 }
 
 async function getQuoteDailyResponse() {
-  const quote = await chatWithGPT(
-    "Hãy cho tôi một câu quote ngắn gọn truyền cảm hứng làm việc đối với một lập trình viên - chỉ trả lời bằng tiếng Việt"
-  );
+  let quote = "";
+  try {
+    quote = await chatWithGPT(
+      "Hãy cho tôi một câu quote ngắn gọn truyền cảm hứng làm việc đối với một lập trình viên - chỉ trả lời bằng tiếng Việt"
+    );
+  } catch (error) {
+    console.error("Lỗi khi chat với ChatGPT:", error.message);
+  }
+  if (!quote) {
+    quote = "No. This is not your first day!!!";
+  }
   const url = "https://docs.google.com/spreadsheets/d/1zitdZCFNoX_u6xz83guKCmNX6dH8sGXoPOPm7bcSQUE/edit?usp=sharing";
   return `${quote}\nMột câu quote tạo cảm hứng làm việc đúng không nào. Đúng rồi thì mọi người nhớ nhập công việc mình làm vào đây nhé, không đúng thì cũng nhập nhé\n${url}`;
 }
