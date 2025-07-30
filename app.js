@@ -179,17 +179,18 @@ cron.schedule(
         "Cơm trưa cô 8 - Đào Cam Mộc",
       ];
       const randomStore = store[Math.floor(Math.random() * store.length)];
-      const content = await chatWithGPT(
-        `Hãy cho tôi một tin nhắn ngắn gọn giống như một cô gái đôi mươi nhắc nhở các anh đồng nghiệp để đặt cơm trưa của quán ${randomStore} - chỉ trả lời bằng tiếng Việt`
-      );
+      let content = '';
+      try {
+        content = await chatWithGPT(
+          `Hãy cho tôi một tin nhắn ngắn gọn giống như một cô gái đôi mươi nhắc nhở các anh đồng nghiệp để đặt cơm trưa của quán ${randomStore} - chỉ trả lời bằng tiếng Việt`
+        );
+      } catch (error) {
+        console.error("Meme schedule error:", error);
+        content = `No. This is not your first day.\n ${randomStore}`;
+      }
       await sendTelegramMessage(content);
-      res.status(200).json({
-        success: true,
-        message: content,
-      });
     } catch (err) {
       console.error("Meme schedule error:", err);
-      res.status(500).json({ success: false, message: "Error" });
     }
   },
   {
